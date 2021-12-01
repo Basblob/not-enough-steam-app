@@ -27,3 +27,8 @@ Ideas to consider:
 
 - Main page includes most played game only with bubbles floating around, with sizes varying by number of people who also played that game.
 - Main page includes multiple top games simultaneously, or multiple pinned games. Games have branches coming off them connecting to the most played games of that playerbase.
+
+
+TODO:
+- create and set up .env
+- create and integrate database/mysql
