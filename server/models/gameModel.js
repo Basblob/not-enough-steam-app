@@ -11,6 +11,7 @@ class relatedGame {
     this.name = gameName;
     this.occurences = 1;
     this.radius = 1;
+    this.group = "child";
   }
 
   incrementOccurences() {
@@ -76,7 +77,7 @@ saveCommonGamesPlayed = async (userList) => {
         if (Object.keys(r.data.response).length !== 0) {
           let usersGames = [];
           r.data.response.games.map((game) => {
-            if (game.playtime_forever > 20) {
+            if (game.playtime_forever > 10) {
               usersGames.push(new relatedGame(game.appid, game.name));
             }
           });
@@ -92,7 +93,7 @@ saveCommonGamesPlayed = async (userList) => {
     commonGames = await tempGamesData.shift();
   }
 
-  // 
+  //
   for (list in tempGamesData) {
     if ((await tempGamesData[list]) != undefined) {
       (await tempGamesData[list]).map((game) => {
@@ -109,11 +110,29 @@ saveCommonGamesPlayed = async (userList) => {
   return commonGames;
 };
 
-//The function which returns the graph.
-//This function must retain information like the name and ID of the game that will be the parent node in the graph.
-exports.returnFunc = async (id) => {
-  return saveCommonGamesPlayed(await pullUserListByGameID(id));
-  // return await pullUserListByGameID(id);
+formatAsForceGraph = (commonGames, appID) => {
+  commonGames.find((game) => game.id == appID).group = "parent";
+  let sortedCommonGames = commonGames.sort(
+    (a, b) => b.occurences - a.occurences
+  );
+  let mostPlayed = sortedCommonGames.splice(0, 9);
+  let parentID = mostPlayed.find((game) => game.group === "parent").id;
+  let linksList = mostPlayed.map((game) => {
+    if (game.group === "child") {
+      return {
+        source: game.id,
+        target: parentID,
+      };
+    }
+  });
+  linksList.shift();
+  return { nodes: mostPlayed, links: linksList };
 };
 
-// module.exports = { returnFunc };
+//The function which returns the graph.
+exports.returnFunc = async (id) => {
+  return formatAsForceGraph(
+    await saveCommonGamesPlayed(await pullUserListByGameID(id)),
+    id
+  );
+};
