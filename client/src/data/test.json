@@ -1,0 +1,24 @@
+{
+  "nodes": [
+    {
+      "id": "Main Node"
+    },
+    {
+      "id": "Child Node 1"
+    },
+    {
+      "id": "Child Node 2"
+    }
+  ],
+  "links": [
+    {
+      "source": "Child Node 1",
+      "target": "Main Node"
+    },
+    {
+      "source": "Child Node 2",
+      "target": "Main Node"
+    }
+
+  ]
+}

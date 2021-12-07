@@ -598,7 +598,8 @@
       "id": "Optimisation of the Anti-Trypanosoma brucei Activity of the Opioid Agonist U50488",
       "group": "Cited Works",
       "radius": 1,
-      "citing_patents_count": 1
+      "citing_patents_count": 1,
+      "nodeRelSize": 2
     },
     { "id": "109-294-662-661-65X", "group": "Citing Patents" },
     { "id": "074-937-457-594-345", "group": "Citing Patents" },
