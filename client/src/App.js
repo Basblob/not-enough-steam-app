@@ -1,37 +1,20 @@
 import "./App.scss";
 import React, { Component } from "react";
-import initData from "./data/CounterStrikeData.json";
-import { ForceGraph3D } from "react-force-graph";
-import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import NetworkPage from "./pages/NetworkPage/NetworkPage";
+import SiteHeader from "./components/SiteHeader/SiteHeader";
 
 class App extends Component {
-  state = {
-    data: initData,
-  };
-  // let graphData = axios.get("https://localhost:8080/game/359550").then((r) => {
-  //   return r.data;
-  // });
-  // console.log(await graphData)
-  componentDidMount() {
-    axios.get("http://localhost:8080/game/1172470").then((r) => {
-      console.log(r.data);
-      this.setState({ data: r.data });
-    });
-  }
+  state = {};
 
   render() {
-    if (Object.keys(this.state.data).length === 0) {
-      return <div>Loading...</div>;
-    }
     return (
-      <div>
-        <ForceGraph3D
-          graphData={this.state.data}
-          nodeLabel={(node) => {
-            return node.name;
-          }}
-        />
-      </div>
+      <Router>
+        <SiteHeader />
+        <Switch>
+          <Route exact path="/" component={NetworkPage} />
+        </Switch>
+      </Router>
     );
   }
 }

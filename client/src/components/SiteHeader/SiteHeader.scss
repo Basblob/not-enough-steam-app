@@ -1,0 +1,11 @@
+@use "../../styles/partials/variables";
+@use "../../styles/partials/mixins";
+@use "../../styles/partials/fonts";
+
+.site-header {
+  &__nav {
+    display: flex;
+    &__link {
+    }
+  }
+}
