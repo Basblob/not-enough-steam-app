@@ -1,3 +1,8 @@
+@use "./styles/partials/variables" as *;
+@use "./styles/partials/mixins" as *;
+@use "./styles/partials/fonts" as *;
+
 body {
   font-family: Arial, Helvetica, Verdana, sans-serif;
+  background-color: $steam-lightblue;
 }

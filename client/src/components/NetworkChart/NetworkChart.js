@@ -17,12 +17,18 @@ export default class NetworkChart extends Component {
 
   render() {
     return (
-      <figure>
+      <figure class="chart">
+        <form action="">
+          <input type="text" />
+          <button>button</button>
+        </form>
         <ForceGraph3D
           graphData={this.state.data}
           nodeLabel={(node) => {
             return node.name;
           }}
+          backgroundColor={'rgb(27, 40, 56)'}
+          
         />
       </figure>
     );

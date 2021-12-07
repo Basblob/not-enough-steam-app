@@ -1,17 +1,36 @@
 import React from "react";
+import "./SiteHeader.scss";
+import SidePanel from "../SidePanel/SidePanel";
+import logo from "../../assets/header-logo.png";
+import axios from "axios";
+
+const openPanel = (target) => {
+  target.style.width = "250px";
+};
+const closePanel = (target) => {
+  target.style.width = 0;
+};
+
 
 export default function SiteHeader() {
   return (
     <header class="site-header">
-      <img src="" alt="" />
-      <nav class="site-header__nav">
-        <a href="/" class="site-header__nav__link">
-          Home
-        </a>
-        <a href="/Network" class="site-header__nav__link">
-          Find Your Next Game
-        </a>
-      </nav>
+      <SidePanel closePanel={closePanel} />
+      <button
+        onClick={(e) => {
+          const sidePanel = e.target.parentNode.children[0];
+          openPanel(sidePanel);
+        }}
+        class="site-header__open-panel"
+      ></button>
+      <div class="site-header__title">
+        <h1 class="site-header__title__text">NOT ENOUGH</h1>
+        <img
+          src={logo}
+          alt="steam piston"
+          class="site-header__title__logo"
+        />
+      </div>
     </header>
   );
 }
