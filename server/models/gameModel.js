@@ -19,29 +19,51 @@ class relatedGame {
   }
 }
 
-pullUserListByGameID = async (appID, numUsers) => {
-  const playersList = axios
-    .get(`${steam_public}/appreviews/${appID}?json=1&num_per_page=100`)
+getPlayerListPage = (appID, cursor, playersList) => {
+  const playersListPlusCursor = axios
+    .get(
+      `${steam_public}/appreviews/${appID}?json=1&num_per_page=100&cursor=${cursor}`
+    )
     .then((r) => {
       let reviewsAsList = Object.values(r.data);
-      let playersList = [];
-      //these 3 lines are turning the response object into JUST the author objects so that we can get the author ids
       reviewsAsList.splice(0, 2);
-      reviewsAsList.pop();
+      let nextCursor = reviewsAsList.pop();
       reviewsAsList = reviewsAsList.pop();
-      playersList = reviewsAsList.map((review) => review.author); // just the player objects
-      playersList = playersList.map((player) => player.steamid); // just the ids
-      return playersList;
-      //r.data returns 20 reviews unless otherwise specified
-      //passing the cursor as a parameter gives the next page of reviews
-      //you can get up to 100 reviews in a single page by passing a value with the num_per_page parameter
-
-      //TODO refactor to get certain number of reviews. Also maybe type of/recency of review
+      newPlayersList = reviewsAsList.map((review) => review.author); // just the player objects
+      newPlayersList = newPlayersList.map((player) => player.steamid); // just the ids
+      // console.log(newPlayersList)
+      playersList = playersList.concat(newPlayersList);
+      return { nextCursor, playersList };
     });
-  return playersList;
+  return playersListPlusCursor;
 };
 
-saveMostCommonGamesPlayed = async (userList) => {
+pullUserListByGameID = async (appID) => {
+  let pageOne = await getPlayerListPage(appID, "*", []);
+  let pageTwo = await getPlayerListPage(
+    appID,
+    pageOne.nextCursor,
+    pageOne.playersList
+  );
+  let pageThree = await getPlayerListPage(
+    appID,
+    pageTwo.nextCursor,
+    pageTwo.playersList
+  );
+  let pageFour = await getPlayerListPage(
+    appID,
+    pageThree.nextCursor,
+    pageThree.playersList
+  );
+  let pageFive = await getPlayerListPage(
+    appID,
+    pageFour.nextCursor,
+    pageFour.playersList
+  );
+  return pageFive.playersList;
+};
+
+saveCommonGamesPlayed = async (userList) => {
   // TODO: Something to think about is saving more data than necessary in the nodes of a game.
   // This way, you can do interesting things with the data on the client side.
   // As an example, when you click on a game, maybe you could get a popup that should the average played hours.
@@ -63,27 +85,35 @@ saveMostCommonGamesPlayed = async (userList) => {
       });
     return oneUsersGames;
   });
+
+  // Find first usable data
   let commonGames = await tempGamesData.shift();
-  for (list in tempGamesData) {
-    if (await tempGamesData[list] != undefined) {
-      console.log(await tempGamesData[list]);
-    }
+  while (commonGames == undefined) {
+    commonGames = await tempGamesData.shift();
   }
 
-  // if (tempGamesPlayed.find((counted) => counted.id === game.id)) {
-  //   tempGamesPlayed
-  //     .find((counted) => counted.id === game.id)
-  //     .incrementOccurences();
-  // } else {
-  //   tempGamesPlayed.push(new relatedGame(game.appid, game.name));
-  // }
-  return userList;
+  // 
+  for (list in tempGamesData) {
+    if ((await tempGamesData[list]) != undefined) {
+      (await tempGamesData[list]).map((game) => {
+        if (commonGames.find((commonGame) => commonGame.id === game.id)) {
+          commonGames
+            .find((commonGame) => commonGame.id === game.id)
+            .incrementOccurences();
+        } else {
+          commonGames.push(game);
+        }
+      });
+    }
+  }
+  return commonGames;
 };
 
 //The function which returns the graph.
 //This function must retain information like the name and ID of the game that will be the parent node in the graph.
 exports.returnFunc = async (id) => {
-  return saveMostCommonGamesPlayed(await pullUserListByGameID(id, 0));
+  return saveCommonGamesPlayed(await pullUserListByGameID(id));
+  // return await pullUserListByGameID(id);
 };
 
 // module.exports = { returnFunc };
