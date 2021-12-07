@@ -140,9 +140,16 @@ formatAsForceGraph = (commonGames, appID) => {
 };
 
 //The function which returns the graph.
-exports.returnFunc = async (id) => {
+exports.returnForceGraph = async (id) => {
   return formatAsForceGraph(
     await saveCommonGamesPlayed(await pullUserListByGameID(id)),
     id
   );
+};
+
+exports.returnAllGames = () => {
+  let gameList = axios.get(`${steam_private}/ISteamApps/GetAppList/v2/?format=json`).then((r) => {
+    return r.data.applist.apps
+  });
+  return gameList;
 };
