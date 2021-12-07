@@ -1,7 +1,8 @@
 {
   "nodes": [
     {
-      "id": "Main Node"
+      "id": "Main Node",
+      "parentName": "This shouldn't affect the render"
     },
     {
       "id": "Child Node 1"
@@ -19,6 +20,5 @@
       "source": "Child Node 2",
       "target": "Main Node"
     }
-
   ]
 }
