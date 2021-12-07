@@ -35,6 +35,9 @@ getPlayerListPage = (appID, cursor, playersList) => {
       // console.log(newPlayersList)
       playersList = playersList.concat(newPlayersList);
       return { nextCursor, playersList };
+    })
+    .catch((e) => {
+      console.log(e);
     });
   return playersListPlusCursor;
 };
@@ -83,6 +86,9 @@ saveCommonGamesPlayed = async (userList) => {
           });
           return usersGames;
         }
+      })
+      .catch((e) => {
+        console.log(e);
       });
     return oneUsersGames;
   });
@@ -112,10 +118,14 @@ saveCommonGamesPlayed = async (userList) => {
 
 formatAsForceGraph = (commonGames, appID) => {
   commonGames.find((game) => game.id == appID).group = "parent";
+  let parentGame = commonGames.find((game) => game.group === "parent");
   let sortedCommonGames = commonGames.sort(
     (a, b) => b.occurences - a.occurences
   );
   let mostPlayed = sortedCommonGames.splice(0, 9);
+  if (!mostPlayed.find((game) => game.id == appID)) {
+    mostPlayed.unshift(parentGame);
+  }
   let parentID = mostPlayed.find((game) => game.group === "parent").id;
   let linksList = mostPlayed.map((game) => {
     if (game.group === "child") {

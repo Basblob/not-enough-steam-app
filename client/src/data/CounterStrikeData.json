@@ -1,0 +1,101 @@
+{
+  "nodes": [
+    {
+      "id": 730,
+      "name": "Counter-Strike: Global Offensive",
+      "occurences": 262,
+      "radius": 262,
+      "group": "parent"
+    },
+    {
+      "id": 304930,
+      "name": "Unturned",
+      "occurences": 54,
+      "radius": 54,
+      "group": "child"
+    },
+    {
+      "id": 1172470,
+      "name": "Apex Legends",
+      "occurences": 53,
+      "radius": 53,
+      "group": "child"
+    },
+    {
+      "id": 945360,
+      "name": "Among Us",
+      "occurences": 51,
+      "radius": 51,
+      "group": "child"
+    },
+    {
+      "id": 714010,
+      "name": "Aim Lab",
+      "occurences": 47,
+      "radius": 47,
+      "group": "child"
+    },
+    {
+      "id": 252490,
+      "name": "Rust",
+      "occurences": 44,
+      "radius": 44,
+      "group": "child"
+    },
+    {
+      "id": 291550,
+      "name": "Brawlhalla",
+      "occurences": 43,
+      "radius": 43,
+      "group": "child"
+    },
+    {
+      "id": 431960,
+      "name": "Wallpaper Engine",
+      "occurences": 41,
+      "radius": 41,
+      "group": "child"
+    },
+    {
+      "id": 271590,
+      "name": "Grand Theft Auto V",
+      "occurences": 39,
+      "radius": 39,
+      "group": "child"
+    }
+  ],
+  "links": [
+    {
+      "source": 304930,
+      "target": 730
+    },
+    {
+      "source": 1172470,
+      "target": 730
+    },
+    {
+      "source": 945360,
+      "target": 730
+    },
+    {
+      "source": 714010,
+      "target": 730
+    },
+    {
+      "source": 252490,
+      "target": 730
+    },
+    {
+      "source": 291550,
+      "target": 730
+    },
+    {
+      "source": 431960,
+      "target": 730
+    },
+    {
+      "source": 271590,
+      "target": 730
+    }
+  ]
+}

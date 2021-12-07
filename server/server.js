@@ -12,9 +12,9 @@ const express = require("express"),
   gameRoutes = require("./routes/gameRoutes.js"),
   app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors());
 
 app.use("/game", gameRoutes);
 
