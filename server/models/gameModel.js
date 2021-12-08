@@ -45,31 +45,6 @@ pullUserListByGameID = async (appID) => {
   console.log('Generating player list for game...')
   let pageOne = await getPlayerListPage(appID, "*", []);
   console.log('1 done')
-  // let pageTwo = await getPlayerListPage(
-  //   appID,
-  //   pageOne.nextCursor,
-  //   pageOne.playersList
-  // );
-  // console.log('2 done')
-  // let pageThree = await getPlayerListPage(
-  //   appID,
-  //   pageTwo.nextCursor,
-  //   pageTwo.playersList
-  // );
-  // console.log('3 done')
-  // let pageFour = await getPlayerListPage(
-  //   appID,
-  //   pageThree.nextCursor,
-  //   pageThree.playersList
-  // );
-  // console.log('4 done')
-  // let pageFive = await getPlayerListPage(
-  //   appID,
-  //   pageFour.nextCursor,
-  //   pageFour.playersList
-  // );
-  // console.log('5 done')
-  // return pageFive.playersList;
   return pageOne.playersList;
 };
 
