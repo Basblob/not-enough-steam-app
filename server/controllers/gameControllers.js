@@ -1,7 +1,7 @@
 const gameModel = require("../models/gameModel");
 
 exports.getAllSteamGames = async (req, res, next) => {
-  res.json(await gameModel.returnAllGames());
+  res.json(gameModel.returnAllGames());
 };
 
 exports.getSimilarGames = async (req, res, next) => {
@@ -14,5 +14,4 @@ exports.getSimilarGames = async (req, res, next) => {
     next(err);
   }
   res.json(await gameModel.returnForceGraph(appID));
-  // res.json(gameModel.returnFunc(appID));
 };
