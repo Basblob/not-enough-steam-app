@@ -1,9 +1,7 @@
-const { default: axios } = require("axios"),
-  path = require("path"),
-  key = "120E1D21EE907F60B406ED55618E2577",
+const axios = require("axios"),
+  key = "37A0E0DF6A46508C0AE3284A00BF84EA",
   steam_private = "https://api.steampowered.com",
   steam_public = "https://store.steampowered.com",
-  steam_spy = "https://steamspy.com/api.php",
   allGames = require("../data/AllGamesFromAPIFormatted.json");
 
 class relatedGame {
@@ -22,6 +20,7 @@ class relatedGame {
 }
 
 getPlayerListPage = (appID, cursor, playersList) => {
+  console.log('Grabbing next page of results...')
   const playersListPlusCursor = axios
     .get(
       `${steam_public}/appreviews/${appID}?json=1&num_per_page=100&cursor=${cursor}`
@@ -43,31 +42,39 @@ getPlayerListPage = (appID, cursor, playersList) => {
 };
 
 pullUserListByGameID = async (appID) => {
+  console.log('Generating player list for game...')
   let pageOne = await getPlayerListPage(appID, "*", []);
-  let pageTwo = await getPlayerListPage(
-    appID,
-    pageOne.nextCursor,
-    pageOne.playersList
-  );
-  let pageThree = await getPlayerListPage(
-    appID,
-    pageTwo.nextCursor,
-    pageTwo.playersList
-  );
-  let pageFour = await getPlayerListPage(
-    appID,
-    pageThree.nextCursor,
-    pageThree.playersList
-  );
-  let pageFive = await getPlayerListPage(
-    appID,
-    pageFour.nextCursor,
-    pageFour.playersList
-  );
-  return pageFive.playersList;
+  console.log('1 done')
+  // let pageTwo = await getPlayerListPage(
+  //   appID,
+  //   pageOne.nextCursor,
+  //   pageOne.playersList
+  // );
+  // console.log('2 done')
+  // let pageThree = await getPlayerListPage(
+  //   appID,
+  //   pageTwo.nextCursor,
+  //   pageTwo.playersList
+  // );
+  // console.log('3 done')
+  // let pageFour = await getPlayerListPage(
+  //   appID,
+  //   pageThree.nextCursor,
+  //   pageThree.playersList
+  // );
+  // console.log('4 done')
+  // let pageFive = await getPlayerListPage(
+  //   appID,
+  //   pageFour.nextCursor,
+  //   pageFour.playersList
+  // );
+  // console.log('5 done')
+  // return pageFive.playersList;
+  return pageOne.playersList;
 };
 
 saveCommonGamesPlayed = async (userList) => {
+  console.log('Finding most common Games...')
   let tempGamesData = userList.map((id) => {
     let oneUsersGames = axios
       .get(
@@ -96,6 +103,7 @@ saveCommonGamesPlayed = async (userList) => {
     commonGames = await tempGamesData.shift();
   }
 
+
   for (list in tempGamesData) {
     if ((await tempGamesData[list]) != undefined) {
       (await tempGamesData[list]).map((game) => {
@@ -113,6 +121,7 @@ saveCommonGamesPlayed = async (userList) => {
 };
 
 formatAsForceGraph = (commonGames, appID) => {
+  console.log('Formatting Data into usable format...')
   commonGames.find((game) => game.id == appID).group = "parent";
   let parentGame = commonGames.find((game) => game.group === "parent");
   let sortedCommonGames = commonGames.sort(

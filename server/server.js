@@ -3,10 +3,6 @@ const express = require("express"),
   axios = require("axios"),
   cors = require("cors"),
   PORT = 8080,
-  key = "120E1D21EE907F60B406ED55618E2577",
-  private_url = "https://api.steampowered.com",
-  public_url = "https://store.steampowered.com",
-  steam_spy = "https://steamspy.com/api.php",
   gameRoutes = require("./routes/gameRoutes.js"),
   app = express();
 
