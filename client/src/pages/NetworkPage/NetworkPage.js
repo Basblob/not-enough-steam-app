@@ -29,13 +29,7 @@ export default class NetworkPage extends Component {
         <ForceGraph3D
           graphData={this.state.data}
           nodeLabel={(node) => {
-            return (
-              <div>
-                <p>{node.name}</p>
-                <br></br>
-                <p>Frequency: {node.radius}</p>
-              </div>
-            );
+            return `${node.name} --- Frequency: ${node.radius * 3}`
           }}
           backgroundColor={"rgb(27, 40, 56)"}
         />
