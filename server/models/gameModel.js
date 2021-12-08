@@ -23,7 +23,7 @@ getPlayerListPage = (appID, cursor, playersList) => {
   console.log('Grabbing next page of results...')
   const playersListPlusCursor = axios
     .get(
-      `${steam_public}/appreviews/${appID}?json=1&num_per_page=100&cursor=${cursor}`
+      `${steam_public}/appreviews/${appID}?json=1&num_per_page=10&cursor=${cursor}`
     )
     .then((r) => {
       let reviewsAsList = Object.values(r.data);
@@ -133,7 +133,10 @@ formatAsForceGraph = (commonGames, appID) => {
   }
   let parentID = mostPlayed.find((game) => game.group === "parent").id;
   let linksList = mostPlayed.map((game) => {
-    if (game.group === "child") {
+    // console.log(game)
+    console.log(parentID)
+    if (game.group == "child") {
+      
       return {
         source: game.id,
         target: parentID,
@@ -141,6 +144,13 @@ formatAsForceGraph = (commonGames, appID) => {
     }
   });
   linksList.shift();
+  let returnObj = { nodes: mostPlayed, links: linksList }
+  returnObj.links.map(link => {
+    if(link == undefined ){
+      returnObj.links.splice(returnObj.links.indexOf(link), 1)
+    }
+  })
+  console.log(returnObj)
   return { nodes: mostPlayed, links: linksList };
 };
 
