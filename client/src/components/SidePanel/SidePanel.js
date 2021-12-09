@@ -10,8 +10,8 @@ export default function SidePanel(props) {
         const sidePanel = e.target.parentNode;
         props.closePanel(sidePanel)
       }}></button>
-      <a href="/">link 1</a>
-      <a href="/network">link 2</a>
+      <a className="panel__link" href="/">ABOUT</a>
+      <a className="panel__link" href="/network">FIND GAMES</a>
     </div>
   );
 }

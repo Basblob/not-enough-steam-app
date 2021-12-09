@@ -1,5 +1,6 @@
+require("dotenv").config();
 const axios = require("axios"),
-  key = "37A0E0DF6A46508C0AE3284A00BF84EA",
+  key = process.env.STEAM_API_KEY,
   steam_private = "https://api.steampowered.com",
   steam_public = "https://store.steampowered.com",
   allGames = require("../data/AllGamesFromAPIFormatted.json");
@@ -142,4 +143,13 @@ exports.returnAllGames = () => {
       return r.data.applist.apps;
     });
   return allGames;
+};
+
+exports.getAppInfo = (id) => {
+  let gameInfo = axios
+    .get(`${steam_public}/api/appdetails?language=english&appids=${id}`)
+    .then((r) => {
+      return r.data;
+    });
+  return gameInfo;
 };

@@ -1,0 +1,99 @@
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/fonts" as *;
+
+.network {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  &__input {
+    width: 800px;
+    background-color: $steam-buttonblue;
+    color: $steam-buttonblue;
+    -webkit-box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.68);
+  }
+  .loading-container {
+    opacity: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    pointer-events: none;
+    z-index: 2;
+    .network__loading {
+      -webkit-animation: rotation 3s infinite linear;
+      -moz-animation: rotation 3s infinite linear;
+      -o-animation: rotation 3s infinite linear;
+      animation: rotation 3s infinite linear;
+      transform-origin: 50% 50%;
+      -webkit-transform-origin: 50% 50%;
+      -moz-transform-origin: 50% 50%;
+    }
+  }
+  &__modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $steam-bluegrey;
+    border-radius: 30px;
+    outline: none;
+    -webkit-box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.68);
+    box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.68);
+    &:hover {
+      -webkit-box-shadow: 0px 0px 5px 1px rgba(145, 145, 145, 0.68);
+      box-shadow: 0px 0px 5px 1px rgba(145, 145, 145, 0.68);
+    }
+  }
+
+  &__modal-overlay {
+    position: fixed;
+    top: 300px;
+    right: 200px;
+    width: 400px;
+    height: 500px;
+    background-color: none;
+  }
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.node-label {
+  p {
+    color: white;
+  }
+  color: white;
+}
