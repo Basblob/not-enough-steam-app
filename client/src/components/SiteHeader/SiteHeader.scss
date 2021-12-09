@@ -8,27 +8,21 @@
   height: 100px;
   justify-content: center;
   position: relative;
-  // &__nav {
-  //   display: flex;
-  //   &__link {
-  //     font-style: none;
-  //     text-decoration: none;
-  //     color: $steam-grey;
-  //   }
-  // }
+
   &__title {
     display: flex;
     height: 100%;
     align-items: center;
+    // margin-left: 35px;
     &__text {
-      font-size: 28px;
+      padding-top: 2px;
+      font-size: 29px;
       font-weight: 600;
       color: $steam-white;
     }
     &__logo {
       height: 60%;
-      margin-left: -20px;
-      // width: 100%;
+      margin-left: -18px;
     }
   }
   &__open-panel {
@@ -36,6 +30,18 @@
     left: 0;
     height: 50px;
     width: 50px;
-    background-color: red;
+    // background-color: red;
+    border: none;
+    outline: none;
+    background-color: $steam-darkblue;
+    background-image: url("../../assets/menu.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 15px;
+    margin-top: 10px;
+    &:hover {
+      width: 51px;
+      height: 51px;
+    }
   }
 }

@@ -15,3 +15,9 @@ exports.getSimilarGames = async (req, res, next) => {
   }
   res.json(await gameModel.returnForceGraph(appID));
 };
+
+exports.getGameInfo = async (req, res, next) => {
+  let appID = req.params.appID;
+  let gameInfo = await gameModel.getAppInfo(appID)
+  res.json(gameInfo)
+}

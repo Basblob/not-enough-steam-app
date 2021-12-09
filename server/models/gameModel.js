@@ -1,5 +1,6 @@
+require("dotenv").config();
 const axios = require("axios"),
-  key = "37A0E0DF6A46508C0AE3284A00BF84EA",
+  key = process.env.STEAM_API_KEY,
   steam_private = "https://api.steampowered.com",
   steam_public = "https://store.steampowered.com",
   allGames = require("../data/AllGamesFromAPIFormatted.json");
@@ -20,7 +21,7 @@ class relatedGame {
 }
 
 getPlayerListPage = (appID, cursor, playersList) => {
-  console.log('Grabbing next page of results...')
+  console.log("Grabbing next page of results...");
   const playersListPlusCursor = axios
     .get(
       `${steam_public}/appreviews/${appID}?json=1&num_per_page=10&cursor=${cursor}`
@@ -42,14 +43,14 @@ getPlayerListPage = (appID, cursor, playersList) => {
 };
 
 pullUserListByGameID = async (appID) => {
-  console.log('Generating player list for game...')
+  console.log("Generating player list for game...");
   let pageOne = await getPlayerListPage(appID, "*", []);
-  console.log('1 done')
+  console.log("1 done");
   return pageOne.playersList;
 };
 
 saveCommonGamesPlayed = async (userList) => {
-  console.log('Finding most common Games...')
+  console.log("Finding most common Games...");
   let tempGamesData = userList.map((id) => {
     let oneUsersGames = axios
       .get(
@@ -78,7 +79,6 @@ saveCommonGamesPlayed = async (userList) => {
     commonGames = await tempGamesData.shift();
   }
 
-
   for (list in tempGamesData) {
     if ((await tempGamesData[list]) != undefined) {
       (await tempGamesData[list]).map((game) => {
@@ -96,7 +96,7 @@ saveCommonGamesPlayed = async (userList) => {
 };
 
 formatAsForceGraph = (commonGames, appID) => {
-  console.log('Formatting Data into usable format...')
+  console.log("Formatting Data into usable format...");
   commonGames.find((game) => game.id == appID).group = "parent";
   let parentGame = commonGames.find((game) => game.group === "parent");
   let sortedCommonGames = commonGames.sort(
@@ -108,10 +108,8 @@ formatAsForceGraph = (commonGames, appID) => {
   }
   let parentID = mostPlayed.find((game) => game.group === "parent").id;
   let linksList = mostPlayed.map((game) => {
-    // console.log(game)
-    console.log(parentID)
+    console.log(parentID);
     if (game.group == "child") {
-      
       return {
         source: game.id,
         target: parentID,
@@ -119,13 +117,14 @@ formatAsForceGraph = (commonGames, appID) => {
     }
   });
   linksList.shift();
-  let returnObj = { nodes: mostPlayed, links: linksList }
-  returnObj.links.map(link => {
-    if(link == undefined ){
-      returnObj.links.splice(returnObj.links.indexOf(link), 1)
+  let returnObj = { nodes: mostPlayed, links: linksList };
+  returnObj.links.map((link) => {
+    if (link == undefined) {
+      returnObj.links.splice(returnObj.links.indexOf(link), 1);
+      returnObj.links.unshift({ source: 730, target: parentID });
     }
-  })
-  console.log(returnObj)
+  });
+  console.log(returnObj);
   return { nodes: mostPlayed, links: linksList };
 };
 
@@ -144,4 +143,13 @@ exports.returnAllGames = () => {
       return r.data.applist.apps;
     });
   return allGames;
+};
+
+exports.getAppInfo = (id) => {
+  let gameInfo = axios
+    .get(`${steam_public}/api/appdetails?language=english&appids=${id}`)
+    .then((r) => {
+      return r.data;
+    });
+  return gameInfo;
 };

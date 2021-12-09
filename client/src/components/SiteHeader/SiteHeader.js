@@ -10,7 +10,6 @@ const closePanel = (target) => {
   target.style.width = 0;
 };
 
-
 export default function SiteHeader() {
   return (
     <header className="site-header">
