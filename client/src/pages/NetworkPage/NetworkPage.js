@@ -22,9 +22,10 @@ export default class NetworkPage extends Component {
     currentParent: "Counter Strike: Global Offensive",
     name: "Loading...",
     desc: "Loading...",
-    banner: 'Loading...',
-    developer: 'Loading...',
-    website: 'Loading...'
+    banner: "Loading...",
+    developer: "Loading...",
+    publisher: "Loading...",
+    website: "https://store.steampowered.com/app/730",
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -44,18 +45,30 @@ export default class NetworkPage extends Component {
     });
   };
 
+  parseGameInfo = (data) => {
+    let gameData = Object.entries(data);
+    gameData = gameData[0][1];
+
+    this.setState({
+      name: gameData.data.name,
+      desc: gameData.data.short_description,
+      website: `https://store.steampowered.com/app/${gameData.data.steam_appid}`,
+      banner: gameData.data.header_image,
+      developer: gameData.data.developers[0],
+      publisher: gameData.data.publishers[0],
+    });
+  };
+
   handleNodeEvent = (node) => {
     if (!this.state.showModal) {
-      this.setState({ showModal: true, name: node.name });
-      axios.get(`${API}/game/info/${node.id}`);
-    } else if (
-      this.state.showModal &&
-      this.state.currentNodeFocus === node.name
-    ) {
-      this.setState({ showModal: false });
+      this.setState({ showModal: true });
+      axios.get(`${API}/game/info/${node.id}`).then((r) => {
+        this.parseGameInfo(r.data);
+      });
     } else {
-      this.setState({});
-      axios.get(`${API}/game/info/${node.id}`);
+      axios.get(`${API}/game/info/${node.id}`).then((r) => {
+        this.parseGameInfo(r.data);
+      });
     }
   };
 
@@ -72,6 +85,7 @@ export default class NetworkPage extends Component {
           options={this.state.allGames}
           onChange={this.handleChange}
         />
+
         <figure className="loading-container">
           <img
             className="network__loading"
@@ -87,13 +101,44 @@ export default class NetworkPage extends Component {
           ariaHideApp={false}
           isOpen={this.state.showModal}
         >
-          <h2 className="network__modal__title">temp game name extra length</h2>
+          <button
+            className="network__modal__close"
+            onClick={(e) => {
+              this.setState({showModal: false});
+            }}
+          ></button>
+          <h2 className="network__modal__title">{this.state.name}</h2>
+          <img
+            className="network__modal__banner"
+            src={this.state.banner}
+            alt="game banner"
+          />
+          <div className="text-container">
+            <div className="text-subcontainer">
+              <p className="label">Developer:</p>
+              <p className="network__modal__dev">{`${this.state.developer}`}</p>
+            </div>
+            <div className="text-subcontainer">
+              <p className="label">Publisher:</p>
+              <p className="network__modal__pub">{`${this.state.publisher}`}</p>
+            </div>
+          </div>
+          <p className="network__modal__desc modal-text">{this.state.desc}</p>
+          <a
+            className="network__modal__link"
+            href={this.state.website}
+            target="_blank"
+            rel="noreferrer"
+          >
+            TAKE ME TO THE SITE
+          </a>
         </ReactModal>
+
         <ForceGraph3D
           extraRenderers={extraRenderers}
           graphData={this.state.data}
           nodeLabel={(node) => {
-            return `${node.radius} Players Analyzed`;
+            return `${node.radius * 5} Players Analyzed`;
           }}
           onNodeRightClick={(node) => {
             this.handleNodeEvent(node);
