@@ -5,7 +5,7 @@ This app uses calls to the Steam Web API, as well as Steam's storefront API in o
 
 # Installation Instructions:
 
-## Install node
+## Install the right node version
     nvm use 16.13.0
   
 ## Install npm packages
