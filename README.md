@@ -1,7 +1,7 @@
 # NotEnoughSteam
 Not enough steam is a fun app designed to give gamers a look into what games other people are playing on steam.
 
-This app uses calls to the Steam Web API in order to gather information about games and players, and sort that data into a way that's easily accessible through a 3D force-directed graph visualization. Users are able to search up games, and see what people who play that game are also playing.
+This app uses calls to the Steam Web API, as well as Steam's storefront API in order to gather information about games and players, and sort that data into a way that's easily accessible through a 3D force-directed graph visualization. Users are able to search up games, and see what people who play that game are also playing.
 
 # Installation Instructions:
 
